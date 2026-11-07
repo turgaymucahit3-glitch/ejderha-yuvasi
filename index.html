@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Ejderha Yuvası</title>
+<link rel="icon" type="image/png" href="assets/dragon_2.png">
+<meta name="theme-color" content="#2b163a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="player">
+      <div class="avatar"><span class="avatar-ico">🐲</span><span class="plvl" id="plvl">1</span></div>
+      <div class="xp"><div class="pname" id="pname">Yuva Bekçisi</div><div class="xpbar"><div class="xpfill" id="xpfill"></div></div><small id="xptext">0/30 XP</small></div>
+    </div>
+    <div class="currencies">
+      <div class="cur"><span class="ico" data-icon="gold">🪙</span><b id="gold">0</b></div>
+      <div class="cur"><span class="ico" data-icon="ruby">💎</span><b id="rubies">0</b></div>
+    </div>
+    <button class="iconbtn" id="settingsBtn" aria-label="Ayarlar">⚙️</button>
+  </header>
+
+  <div class="statusbar">
+    <div class="prod"><span class="ico" data-icon="essence">🔥</span><b id="prod">0</b><small>/sa</small><span class="boost-tag hidden" id="boostTag">2×</span></div>
+    <button class="mini-cauldron" id="miniCauldron" aria-label="Kazana git">
+      <div class="mini-fill" id="miniFill"></div>
+      <span id="miniText">0 / 0</span>
+    </button>
+  </div>
+
+  <main>
+    <!-- YUVA -->
+    <section class="view active" id="view-yuva">
+      <div class="board-wrap">
+        <div class="board" id="board"></div>
+      </div>
+      <div class="shop">
+        <div class="sell-zone" id="sellZone" title="Ejderhayı buraya sürükleyerek sat">
+          <span>💰</span><small>Sat</small>
+        </div>
+        <div class="shop-card">
+          <button class="arrow" id="shopPrev" aria-label="Önceki">‹</button>
+          <div class="shop-dragon" id="shopDragon"></div>
+          <div class="shop-info">
+            <div class="shop-name" id="shopName"></div>
+            <div class="shop-prod" id="shopProd"></div>
+          </div>
+          <button class="arrow" id="shopNext" aria-label="Sonraki">›</button>
+        </div>
+        <button class="btn primary buy" id="buyBtn"><span>Satın Al</span><b id="buyPrice">100</b></button>
+      </div>
+    </section>
+
+    <!-- KAZAN -->
+    <section class="view" id="view-kazan">
+      <h2 class="view-title">Volkan Kazanı <button class="help" data-help="kazan">?</button></h2>
+      <div class="cauldron-stage">
+        <div class="cauldron-img" id="cauldronImg"></div>
+        <div class="cauldron-lvl" id="cauldronLvl">Seviye 1</div>
+      </div>
+      <div class="bigbar"><div class="bigfill" id="bigFill"></div><span id="bigText">0 / 0</span></div>
+      <p class="hint" id="cauldronHint"></p>
+      <button class="btn primary wide" id="sellBtn">Ateş Özünü Sat</button>
+      <div class="card upgrade">
+        <div>
+          <div class="card-title">Kazanı Büyüt</div>
+          <div class="card-sub" id="upgradeInfo"></div>
+        </div>
+        <button class="btn gold" id="upgradeBtn">⬆ <b id="upgradeCost">0</b></button>
+      </div>
+      <div class="card-row">
+        <div class="card mini">
+          <div class="card-title">2× Üretim</div>
+          <div class="card-sub" id="boostInfo">30 dakika</div>
+          <button class="btn ruby" id="boostBtn">💎 10</button>
+        </div>
+        <div class="card mini">
+          <div class="card-title">Anında Hasat</div>
+          <div class="card-sub">1 saatlik üretim</div>
+          <button class="btn ruby" id="harvestBtn">💎 8</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARK -->
+    <section class="view" id="view-cark">
+      <h2 class="view-title">Kader Çarkı <button class="help" data-help="cark">?</button></h2>
+      <div class="wheel-stage">
+        <div class="wheel-pointer">▼</div>
+        <canvas id="wheel" width="600" height="600"></canvas>
+      </div>
+      <button class="btn primary wide" id="spinBtn">Çevir</button>
+      <button class="btn ruby wide" id="paidSpinBtn">💎 5 ile çevir</button>
+      <p class="hint" id="spinInfo"></p>
+    </section>
+
+    <!-- GOREVLER -->
+    <section class="view" id="view-gorev">
+      <h2 class="view-title">Görevler</h2>
+      <div class="tasks" id="tasks"></div>
+    </section>
+
+    <!-- KITAP -->
+    <section class="view" id="view-kitap">
+      <h2 class="view-title">Ejderha Kitabı</h2>
+      <p class="hint" id="bookInfo"></p>
+      <div class="book" id="book"></div>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <button class="tab active" data-tab="yuva"><span>🥚</span>Yuva</button>
+    <button class="tab" data-tab="kazan"><span>🌋</span>Kazan<i class="dot hidden" id="dotKazan"></i></button>
+    <button class="tab" data-tab="cark"><span>🎡</span>Çark<i class="dot hidden" id="dotCark"></i></button>
+    <button class="tab" data-tab="gorev"><span>📜</span>Görev<i class="dot hidden" id="dotGorev"></i></button>
+    <button class="tab" data-tab="kitap"><span>📖</span>Kitap</button>
+  </nav>
+</div>
+
+<div class="modal hidden" id="modal">
+  <div class="modal-box">
+    <h3 id="modalTitle"></h3>
+    <div id="modalBody"></div>
+    <div class="modal-actions" id="modalActions"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
